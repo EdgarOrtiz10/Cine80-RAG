@@ -1,0 +1,4 @@
+.env
+deploy/ec2-edgar.pem
+__pycache__/
+*.pyc
