@@ -61,7 +61,7 @@ Este proyecto implementa una arquitectura **RAG (Retrieval-Augmented Generation)
 git clone <URL_DEL_REPOSITORIO>
 cd <directorio_proyecto>
 python -m venv venv
-source venv/bin/activate   # En Windows: venv\Scripts\activate
+source venv/Scripts/activate   # En Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
