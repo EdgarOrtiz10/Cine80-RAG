@@ -1,0 +1,16 @@
+{
+ "description": "DEL_SI sin pendiente no debe anunciar un borrado",
+ "origin_bug": "QA-0002",
+ "message": "DEL_SI",
+ "pins": {},
+ "assertions": [
+  {
+   "type": "node_not_run",
+   "node": "Preparar Borrado Múltiple"
+  },
+  {
+   "type": "node_not_run",
+   "node": "Send Eliminado Exitosamente"
+  }
+ ]
+}

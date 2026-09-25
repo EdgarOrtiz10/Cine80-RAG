@@ -167,20 +167,24 @@ def rule_sf02(wf: Workflow) -> list[Finding]:
     return findings
 
 
-def _guarded_upstream(wf: Workflow, writer: str) -> bool:
-    """¿Hay un Code con `throw` justo antes (atravesando envíos de Telegram/pass-through)?"""
-    queue, seen = deque(wf.parents.get(writer, [])), set()
+def _guarded_upstream(wf: Workflow, writer: str, max_hops: int = 6) -> bool:
+    """¿Hay un Code con `throw` antes de la escritura, dentro del mismo tramo de guardado?
+
+    Sube por los padres hasta `max_hops`, sin cruzar Switch (frontera de enrutamiento). Así una
+    única validación antes de la primera escritura protege también a las escrituras en cadena.
+    """
+    queue, seen = deque((p, 1) for p in wf.parents.get(writer, [])), set()
     while queue:
-        p = queue.popleft()
-        if p in seen:
+        p, hops = queue.popleft()
+        if p in seen or hops > max_hops:
             continue
         seen.add(p)
-        if wf.node_type(p) == "n8n-nodes-base.code":
-            if "throw " in (wf.params(p).get("jsCode") or ""):
-                return True
+        t = wf.node_type(p)
+        if t == "n8n-nodes-base.code" and "throw " in (wf.params(p).get("jsCode") or ""):
+            return True
+        if t == "n8n-nodes-base.switch":
             continue
-        if is_telegram_send(wf, p) or wf.node_type(p) in PASS_THROUGH_TYPES:
-            queue.extend(wf.parents.get(p, []))
+        queue.extend((pp, hops + 1) for pp in wf.parents.get(p, []))
     return False
 
 
@@ -247,7 +251,7 @@ def rule_tg01(wf: Workflow) -> list[Finding]:
         text = p.get("text") or ""
         if not mode or not (text.startswith("=") and "{{" in text):
             continue
-        if ESCAPE_HINT_RE.search(text):
+        if ESCAPE_HINT_RE.search(text) or _has_plain_text_fallback(wf, name):
             continue
         findings.append(
             Finding(
@@ -261,6 +265,14 @@ def rule_tg01(wf: Workflow) -> list[Finding]:
             )
         )
     return findings
+
+
+def _has_plain_text_fallback(wf: Workflow, name: str) -> bool:
+    """La salida de error reenvía el mensaje por Telegram sin parse_mode."""
+    return any(
+        is_telegram_send(wf, c) and not (wf.params(c).get("additionalFields") or {}).get("parse_mode")
+        for c in wf.error_children.get(name, [])
+    )
 
 
 def rule_vd01(wf: Workflow) -> list[Finding]:

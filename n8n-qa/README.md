@@ -1,7 +1,7 @@
 # n8n-qa — Sistema QA multiagente para workflows n8n
 
 Detecta, registra (y en fases posteriores corrige y audita) bugs en los workflows de la
-instancia n8n `n8n.eortiz-dev.com`. Estado actual: **F0 + F1 (detección)**.
+instancia n8n `n8n.eortiz-dev.com`. Estado actual: **F0 + F1 (detección) + F2 (corrección en borrador)**.
 
 ## Arquitectura
 
@@ -12,6 +12,9 @@ instancia n8n `n8n.eortiz-dev.com`. Estado actual: **F0 + F1 (detección)**.
 | 1 | A1 Linter | `.claude/agents/n8n-qa-linter.md` + `qa/lint_workflow.py` | Análisis estático |
 | 1 | A2 Forense | `.claude/agents/n8n-qa-forense.md` + `qa/check_execution.py` | Aserciones sobre ejecuciones |
 | 1 | Registro | `qa/registry.py` + `state/bug_registry.json` | Deduplicación por fingerprint, detección de regresiones |
+| 2 | A3 Triage | `.claude/agents/n8n-qa-triage.md` | Causa raíz, bugs hermanos, caso golden |
+| 2 | A4 Fixer | `.claude/agents/n8n-qa-fixer.md` + `fixes/*.json` | Parche mínimo en borrador, nunca publica |
+| 2 | A5 Tester | `.claude/agents/n8n-qa-tester.md` + `qa/golden.py` + `golden/` | Reproduce antes y verifica después con pin data |
 
 ## Catálogo de reglas
 
@@ -23,8 +26,9 @@ instancia n8n `n8n.eortiz-dev.com`. Estado actual: **F0 + F1 (detección)**.
 | SF-01 | high | *(runtime)* Nodo terminó OK con campos obligatorios vacíos | Ejecución #441 |
 | EX-01 | high | *(runtime)* Ejecución con status=error | — |
 | SF-02 | medium | Mensaje de éxito alcanzable tras una escritura sin guardia de validación | "✅ Gasto registrado" con fila vacía |
-| TG-01 | medium | Texto dinámico con `parse_mode` explícito y sin escapar | `Send Respuesta` |
+| TG-01 | medium | Texto dinámico con `parse_mode` explícito, sin escapar y sin fallback a texto plano en la salida de error | `Send Respuesta` |
 | AG-01 | medium | *(runtime)* Agente respondió "sin datos" tras una sola tool vacía sin probar las demás | Ejecución #442 |
+| NR-01 | high | *(triage/golden)* Code que devuelve 0 items corta el flujo antes del mensaje al usuario | Gasto por texto/voz sin productos (ejecución #445) |
 | SD-01 | low | Estado pendiente en `staticData` sin marca de tiempo (nunca expira) | — |
 
 Suprimir un hallazgo concreto: añade `qa-ignore: <RULE_ID>` en las notas del nodo en n8n.
@@ -43,6 +47,21 @@ python3 -m unittest discover -s tests -t .
 `get_execution` con `includeData: true`. Solo stdlib de Python 3.11, sin dependencias.
 
 En Claude Code: "QA" (barrido de todos los workflows activos) o "QA <workflowId>".
+
+## Casos golden (F2)
+
+`golden/<workflowId>/_base.json` simula **todos** los nodos con credenciales (Telegram, Sheets,
+OpenAI), así que las pruebas no escriben en la hoja ni envían mensajes. Cada `gc*.json` define
+el mensaje, pins extra (p. ej. un gasto pendiente) y aserciones `node_ran` / `node_not_run`.
+Usuario ficticio `999000111`; la allowlist y el guardrail se simulan.
+
+```bash
+python3 -m qa.golden list <wf>
+python3 -m qa.golden build <wf> <caso>          # pinData para mcp__n8n__test_workflow
+python3 -m qa.golden check <wf> <caso> <execution.json>
+```
+
+Si añades un nodo con credenciales al workflow, añádelo a `_base.json` o correrá de verdad.
 
 ## Estado y Data Tables
 
@@ -90,6 +109,5 @@ para `.claude/settings.json` (debe aplicarla el propietario del repo):
 
 ## Roadmap
 
-- **F2** Triage + Fixer (parches solo en borrador) + Tester (`test_workflow` con pin data y `golden_cases`).
 - **F3** Auditor independiente + aprobación por Telegram + rollback.
 - **F4** Bibliotecario: cada bug corregido genera regla nueva + golden case.

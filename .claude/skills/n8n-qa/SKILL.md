@@ -1,12 +1,12 @@
 ---
 name: n8n-qa
-description: Orquestador del sistema QA multiagente de n8n (F1 - detección). Úsalo cuando el usuario pida "QA", "barrido QA", "auditar/revisar bugs de n8n" o "QA <workflowId>", o cuando lo dispare la Routine diaria.
+description: Orquestador del sistema QA multiagente de n8n (F1 detección + F2 corrección). Úsalo cuando el usuario pida "QA", "barrido QA", "auditar/revisar bugs de n8n", "QA <workflowId>", "corrige los bugs QA" / "QA fix <bug_id>", o cuando lo dispare la Routine diaria.
 ---
 
-# Orquestador QA n8n — F1 (detección)
+# Orquestador QA n8n — F1 (detección) + F2 (corrección)
 
-En F1 el sistema **solo detecta y registra**. Ningún agente modifica, ejecuta, publica ni
-archiva workflows. Las correcciones llegan en F2 (Fixer/Tester) y F3 (Auditor + gate humano).
+El barrido (F1) **solo detecta y registra**. La corrección (F2) solo ocurre cuando el usuario la
+pide y **nunca publica**: deja el parche en el borrador para revisión humana (F3).
 
 ## Constantes
 - Proyecto n8n: `gCyB4qYXonVTNZfF`
@@ -38,11 +38,30 @@ archiva workflows. Las correcciones llegan en F2 (Fixer/Tester) y F3 (Auditor + 
    - Recurrentes: solo el conteo.
    - Ejecuciones que el Forense no pudo leer.
 
+## Corrección (F2) — solo a petición del usuario
+Ciclo por bug o grupo de bugs del mismo workflow, en este orden:
+1. **Triage** (`n8n-qa-triage`): causa raíz con evidencia, bugs hermanos, caso golden.
+2. **Tester — reproducir** (`n8n-qa-tester`): el caso nuevo debe FALLAR en el borrador actual.
+   Si pasa, no demuestra el bug: vuelve a Triage.
+3. **Fixer** (`n8n-qa-fixer`): parche mínimo en el borrador, rollback anotado.
+4. **Tester — verificar**: TODOS los casos golden del workflow (regresión), no solo el nuevo.
+   Si algo falla: rollback con el versionId anotado **pidiendo confirmación al usuario**, o
+   nueva iteración del Fixer.
+5. **Linter** sobre el borrador parchado: no debe aparecer ningún hallazgo nuevo.
+6. Actualiza `state/bug_registry.json` (status `fix_pending_publish`, `fix_version_id`,
+   `root_cause`) y las Data Tables `bug_registry` / `golden_cases`; commit y push.
+7. Reporta: qué se corrigió, evidencia (executionIds), lo no verificable con pin data, y que
+   **publicar es decisión del usuario**.
+
+Estados del registro: open → fix_pending_publish → published (lo marca el humano al publicar)
+→ regression (si reaparece). `wontfix` y `LIM-*` (limitaciones de plataforma) no bloquean.
+
 ## Reglas de seguridad
-- Prohibido en F1: `update_workflow`, `publish_workflow`, `unpublish_workflow`,
+- Prohibido en el barrido F1: `update_workflow`, `publish_workflow`, `unpublish_workflow`,
   `archive_workflow`, `restore_workflow_version`, `execute_workflow`, `test_workflow`.
-- Si un workflow tiene VD-01 (borrador ≠ publicado), repórtalo primero: ninguna fase
-  posterior puede editar ese workflow hasta que el humano revise el diff.
+- Prohibido SIEMPRE: `publish_workflow`, `unpublish_workflow`, `archive_workflow`.
+- Si un workflow tiene VD-01 (borrador ≠ publicado) con cambios que no son parches QA
+  registrados, el Fixer no lo toca hasta que se revise y registre ese diff.
 - No inventes hallazgos. Solo cuenta lo que devolvieron los scripts; las observaciones
   no verificadas van aparte y marcadas como tales.
 - El MCP de n8n no puede leer filas de Data Tables: la fuente de verdad del registro es

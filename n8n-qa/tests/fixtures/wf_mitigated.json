@@ -1,0 +1,21 @@
+{
+  "id": "wf3", "name": "mitigated", "active": true, "versionId": "v1", "activeVersionId": "v1",
+  "nodes": [
+    {"name": "Router", "type": "n8n-nodes-base.switch", "parameters": {}},
+    {"name": "Validar", "type": "n8n-nodes-base.code", "parameters": {"jsCode": "if (!$('X').first().json.id) throw new Error('x');\nreturn $input.all();"}},
+    {"name": "Append Gastos", "type": "n8n-nodes-base.googleSheets", "parameters": {"operation": "append", "columns": {"value": {"ID": "={{ $('X').first().json.id }}"}}}},
+    {"name": "Explotar", "type": "n8n-nodes-base.code", "parameters": {"jsCode": "return [{ json: { a: 1 } }];"}},
+    {"name": "Append Items", "type": "n8n-nodes-base.googleSheets", "parameters": {"operation": "append", "columns": {"value": {"A": "={{ $json.a }}"}}}},
+    {"name": "Send Success", "type": "n8n-nodes-base.telegram", "parameters": {"text": "✅ ¡Gasto registrado exitosamente!"}},
+    {"name": "Respuesta", "type": "n8n-nodes-base.telegram", "onError": "continueErrorOutput", "parameters": {"text": "={{ $json.output }}", "additionalFields": {"parse_mode": "Markdown"}}},
+    {"name": "Respuesta Plana", "type": "n8n-nodes-base.telegram", "parameters": {"text": "={{ $('Agente').first().json.output }}"}}
+  ],
+  "connections": {
+    "Router": {"main": [[{"node": "Validar", "type": "main", "index": 0}]]},
+    "Validar": {"main": [[{"node": "Append Gastos", "type": "main", "index": 0}]]},
+    "Append Gastos": {"main": [[{"node": "Explotar", "type": "main", "index": 0}]]},
+    "Explotar": {"main": [[{"node": "Append Items", "type": "main", "index": 0}]]},
+    "Append Items": {"main": [[{"node": "Send Success", "type": "main", "index": 0}]]},
+    "Respuesta": {"main": [[], [{"node": "Respuesta Plana", "type": "main", "index": 0}]]}
+  }
+}

@@ -1,0 +1,55 @@
+{
+ "description": "Gasto sin monto no debe escribirse; el usuario recibe error",
+ "origin_bug": "QA-0005",
+ "message": "CONFIRMAR",
+ "pins": {
+  "Recuperar y Detectar Acción": [
+   {
+    "json": {
+     "id": 1790350000000,
+     "fecha": "2026-09-25",
+     "establecimiento": "QA TEST",
+     "categoria": "Alimentación",
+     "moneda": "COP",
+     "monto": null,
+     "descripcion": "Caso golden",
+     "fuente": "telegram",
+     "telefono": 999000111,
+     "registrado_por": "QA",
+     "_ts": 1790350000000,
+     "items": [
+      {
+       "id_gasto": 1790350000000,
+       "fecha": "2026-09-25",
+       "nombre_producto": "PRODUCTO A",
+       "cantidad": 1,
+       "precio_unitario": 7000
+      },
+      {
+       "id_gasto": 1790350000000,
+       "fecha": "2026-09-25",
+       "nombre_producto": "PRODUCTO B",
+       "cantidad": 1,
+       "precio_unitario": 5000
+      }
+     ],
+     "accion": "CONFIRMAR"
+    }
+   }
+  ]
+ },
+ "assertions": [
+  {
+   "type": "node_not_run",
+   "node": "Append Gastos"
+  },
+  {
+   "type": "node_ran",
+   "node": "Send Error Guardado (Usuario)"
+  },
+  {
+   "type": "node_not_run",
+   "node": "Send Success"
+  }
+ ]
+}

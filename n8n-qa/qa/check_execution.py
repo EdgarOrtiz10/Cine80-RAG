@@ -11,6 +11,8 @@ Tipos de aserción:
   agent_fallback   {agent, tools[], no_data_pattern}
                                            AG-01: una tool devolvió [] y el agente respondió
                                            "sin datos" sin probar las demás tools
+  node_ran         {node}                  GC: el nodo debe haberse ejecutado (golden cases)
+  node_not_run     {node}                  GC: el nodo NO debe haberse ejecutado
 Además, toda ejecución con status=error genera EX-01.
 """
 from __future__ import annotations
@@ -83,7 +85,26 @@ def check_agent_fallback(wf_id: str, exec_id: str, runs: dict, a: dict) -> list[
     return findings
 
 
-CHECKS = {"nonempty_fields": check_nonempty_fields, "agent_fallback": check_agent_fallback}
+def check_node_ran(wf_id: str, exec_id: str, runs: dict, a: dict) -> list[Finding]:
+    if a["node"] in runs:
+        return []
+    return [Finding("GC-FAIL", "high", wf_id, a["node"], f"'{a['node']}' debía ejecutarse y no corrió",
+                    f"Ejecución {exec_id}. Nodos ejecutados: {', '.join(sorted(runs))[:600]}")]
+
+
+def check_node_not_run(wf_id: str, exec_id: str, runs: dict, a: dict) -> list[Finding]:
+    if a["node"] not in runs:
+        return []
+    return [Finding("GC-FAIL", "high", wf_id, a["node"], f"'{a['node']}' no debía ejecutarse y corrió",
+                    f"Ejecución {exec_id}.")]
+
+
+CHECKS = {
+    "nonempty_fields": check_nonempty_fields,
+    "agent_fallback": check_agent_fallback,
+    "node_ran": check_node_ran,
+    "node_not_run": check_node_not_run,
+}
 
 
 def check_execution(execution: dict[str, Any], assertions: dict[str, Any]) -> list[Finding]:

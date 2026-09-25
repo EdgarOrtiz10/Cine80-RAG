@@ -34,6 +34,8 @@ class Workflow:
     nodes: dict[str, dict[str, Any]]
     parents: dict[str, list[str]] = field(default_factory=dict)
     children: dict[str, list[str]] = field(default_factory=dict)
+    # Destinos de la salida de error (índice 1) de nodos con onError=continueErrorOutput.
+    error_children: dict[str, list[str]] = field(default_factory=dict)
     active: bool = False
     version_id: str | None = None
     active_version_id: str | None = None
@@ -61,19 +63,27 @@ def parse_workflow(raw: dict[str, Any]) -> Workflow:
     nodes = {n["name"]: n for n in wf.get("nodes", [])}
     parents: dict[str, list[str]] = {n: [] for n in nodes}
     children: dict[str, list[str]] = {n: [] for n in nodes}
+    error_children: dict[str, list[str]] = {n: [] for n in nodes}
     for source, outputs in (wf.get("connections") or {}).items():
-        for branch in outputs.get("main") or []:
+        if source not in nodes:
+            continue
+        has_error_output = nodes[source].get("onError") == "continueErrorOutput"
+        for index, branch in enumerate(outputs.get("main") or []):
             for conn in branch or []:
                 target = conn["node"]
-                if source in nodes and target in nodes:
-                    children[source].append(target)
-                    parents[target].append(source)
+                if target not in nodes:
+                    continue
+                children[source].append(target)
+                parents[target].append(source)
+                if has_error_output and index == len(outputs["main"]) - 1 and index > 0:
+                    error_children[source].append(target)
     return Workflow(
         id=wf.get("id", "unknown"),
         name=wf.get("name", ""),
         nodes=nodes,
         parents=parents,
         children=children,
+        error_children=error_children,
         active=bool(wf.get("active")),
         version_id=wf.get("versionId"),
         active_version_id=wf.get("activeVersionId"),

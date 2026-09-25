@@ -61,6 +61,11 @@ class LinterCleanWorkflow(unittest.TestCase):
         self.assertEqual(run_rules(load_workflow(FIXTURES / "wf_clean.json")), [])
 
 
+class LinterMitigations(unittest.TestCase):
+    def test_guard_before_first_write_covers_chained_writes_and_fallback_covers_tg01(self):
+        self.assertEqual(run_rules(load_workflow(FIXTURES / "wf_mitigated.json")), [])
+
+
 class Forense(unittest.TestCase):
     def run_fixture(self, name):
         execution = json.loads((FIXTURES / name).read_text())

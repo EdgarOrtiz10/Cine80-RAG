@@ -1,0 +1,20 @@
+{
+ "description": "CONFIRMAR sin gasto pendiente no debe escribir nada",
+ "origin_bug": "QA-0003",
+ "message": "CONFIRMAR",
+ "pins": {},
+ "assertions": [
+  {
+   "type": "node_not_run",
+   "node": "Append Gastos"
+  },
+  {
+   "type": "node_not_run",
+   "node": "Enviar Guardando (Confirmar)"
+  },
+  {
+   "type": "node_ran",
+   "node": "Send Cancel"
+  }
+ ]
+}

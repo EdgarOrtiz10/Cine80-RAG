@@ -1,0 +1,388 @@
+{
+ "_doc": "Pins base: todos los nodos con credenciales (Telegram, Sheets, OpenAI) quedan simulados. Generado desde el workflow; regenerar si se añaden nodos con credenciales.",
+ "pins": {
+  "Get a file": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Confirmación": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Append Gastos": [
+   {
+    "json": {
+     "ID": "PIN",
+     "Fecha": "PIN",
+     "Producto": "PIN",
+     "Establecimiento": "PIN",
+     "Categoría": "PIN",
+     "Moneda": "PIN",
+     "Monto": "PIN",
+     "Descripción": "PIN",
+     "Fuente": "PIN",
+     "Telefono": "PIN",
+     "Registrado_Por": "PIN"
+    }
+   }
+  ],
+  "Append Items": [
+   {
+    "json": {
+     "ID_Gasto": "PIN",
+     "Fecha": "PIN",
+     "Nombre_Producto": "PIN",
+     "Cantidad": "PIN",
+     "Precio_Unitario": "PIN"
+    }
+   }
+  ],
+  "Send Success": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Cancel": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Respuesta": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Get Voice File": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Transcribir Audio": [
+   {
+    "json": {
+     "text": "PIN"
+    }
+   }
+  ],
+  "Send Datos Insuficientes": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Bloqueado": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Consultar Gastos": [
+   {
+    "json": {}
+   }
+  ],
+  "Responder Callback": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Consultar Gastos por Categoría": [
+   {
+    "json": {}
+   }
+  ],
+  "Send Reset Confirmación": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Notificar Error Telegram": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Enviar Procesando (Foto)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Enviar Procesando (Voz)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Enviar Guardando (Confirmar)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Buscar Duplicado": [
+   {
+    "json": {
+     "row_number": 2
+    }
+   }
+  ],
+  "Enviar Aviso Duplicado": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Confirmación (tras Duplicado)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Cancelado (Duplicado)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Leer Gastos (Eliminar)": [
+   {
+    "json": {
+     "row_number": 2
+    }
+   }
+  ],
+  "Leer Items (Eliminar)": [
+   {
+    "json": {
+     "row_number": 2
+    }
+   }
+  ],
+  "Send Sin Coincidencias (Eliminar)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Varias Coincidencias (Eliminar)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Confirmación (Eliminar)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Cancelado (Eliminar)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Eliminar Filas Items": [
+   {
+    "json": {
+     "row_number": 2
+    }
+   }
+  ],
+  "Eliminar Fila Gasto": [
+   {
+    "json": {
+     "row_number": 2
+    }
+   }
+  ],
+  "Send Eliminado Exitosamente": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Selección Inválida": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Actualizar Montos Múltiple": [
+   {
+    "json": {
+     "Monto": "PIN",
+     "row_number": "PIN"
+    }
+   }
+  ],
+  "Send Error Guardado (Usuario)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Notificar Fallo Guardado (Admin)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ],
+  "Send Respuesta (Texto Plano)": [
+   {
+    "json": {
+     "ok": true,
+     "result": {
+      "message_id": 1,
+      "text": "PIN"
+     }
+    }
+   }
+  ]
+ },
+ "entry": {
+  "Guardrail de Entrada": [
+   {
+    "json": {
+     "text": "SAFE"
+    }
+   }
+  ]
+ }
+}
