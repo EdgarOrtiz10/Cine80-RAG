@@ -1,0 +1,21 @@
+{
+  "workflow_id": "AmVxMC4LmwWBMhev",
+  "workflow_name": "Danieled - Bot Finanzas Telegram v2",
+  "assertions": [
+    {
+      "type": "nonempty_fields",
+      "node": "Append Gastos",
+      "fields": ["ID", "Fecha", "Establecimiento", "Monto", "Moneda"]
+    },
+    {
+      "type": "nonempty_fields",
+      "node": "Append Items",
+      "fields": ["ID_Gasto", "Nombre_Producto", "Precio_Unitario"]
+    },
+    {
+      "type": "agent_fallback",
+      "agent": "Danieled Agent",
+      "tools": ["Consultar Gastos", "Consultar Gastos por Categoría"]
+    }
+  ]
+}

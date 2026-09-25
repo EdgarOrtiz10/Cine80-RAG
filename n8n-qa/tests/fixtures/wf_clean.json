@@ -1,0 +1,18 @@
+{
+  "id": "wf2", "name": "clean", "active": true, "versionId": "v1", "activeVersionId": "v1",
+  "nodes": [
+    {"name": "Recuperar", "type": "n8n-nodes-base.code", "parameters": {"jsCode": "const staticData = $getWorkflowStaticData('global');\nconst datos = staticData[k] ? JSON.parse(staticData[k]) : null;\nif (!datos) return [];\nreturn { json: { ...datos } };"}},
+    {"name": "Validar", "type": "n8n-nodes-base.code", "parameters": {"jsCode": "const d = $input.first().json;\nif (!d.id) throw new Error('falta id');\nreturn $input.all();"}},
+    {"name": "Enviar Guardando", "type": "n8n-nodes-base.telegram", "parameters": {"text": "💾 Guardando..."}},
+    {"name": "Append", "type": "n8n-nodes-base.googleSheets", "parameters": {"operation": "append", "columns": {"value": {"ID": "={{ $('Recuperar').first().json.id }}"}}}},
+    {"name": "Send Success", "type": "n8n-nodes-base.telegram", "parameters": {"text": "✅ ¡Gasto registrado exitosamente!"}},
+    {"name": "Msg id", "type": "n8n-nodes-base.set", "parameters": {"v": "={{ $json.result.message_id }}"}},
+    {"name": "Guardar", "type": "n8n-nodes-base.code", "parameters": {"jsCode": "const staticData = $getWorkflowStaticData('global');\nstaticData[k] = JSON.stringify({ ...x, ts: Date.now() });"}}
+  ],
+  "connections": {
+    "Recuperar": {"main": [[{"node": "Validar", "type": "main", "index": 0}]]},
+    "Validar": {"main": [[{"node": "Enviar Guardando", "type": "main", "index": 0}]]},
+    "Enviar Guardando": {"main": [[{"node": "Append", "type": "main", "index": 0}, {"node": "Msg id", "type": "main", "index": 0}]]},
+    "Append": {"main": [[{"node": "Send Success", "type": "main", "index": 0}]]}
+  }
+}

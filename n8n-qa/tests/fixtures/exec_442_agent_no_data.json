@@ -1,0 +1,7 @@
+{
+  "execution": {"id": "442", "workflowId": "AmVxMC4LmwWBMhev", "status": "success"},
+  "data": {"resultData": {"runData": {
+    "Danieled Agent": [{"data": {"main": [[{"json": {"output": "No encontré registros de gastos en la hoja de categorías."}}]]}}],
+    "Consultar Gastos por Categoría": [{"data": {"ai_tool": [[]]}}]
+  }}}
+}

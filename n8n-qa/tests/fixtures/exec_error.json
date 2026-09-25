@@ -1,0 +1,4 @@
+{
+  "execution": {"id": "500", "workflowId": "AmVxMC4LmwWBMhev", "status": "error"},
+  "data": {"resultData": {"error": {"message": "Cannot read properties of undefined (reading 'map')", "node": {"name": "Explotar Items"}}, "runData": {}}}
+}

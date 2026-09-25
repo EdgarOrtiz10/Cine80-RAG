@@ -1,0 +1,9 @@
+{
+  "execution": {"id": "441", "workflowId": "AmVxMC4LmwWBMhev", "status": "success"},
+  "data": {"resultData": {"runData": {
+    "Append Gastos": [{"data": {"main": [[{"json": {"Producto": ""}}]]}}],
+    "Append Items": [{"data": {"main": [[
+      {"json": {"ID_Gasto": 1790352468894, "Nombre_Producto": "YOGURT GRIEG", "Precio_Unitario": 10360}}
+    ]]}}]
+  }}}
+}
