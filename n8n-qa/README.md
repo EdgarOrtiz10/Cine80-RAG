@@ -76,8 +76,10 @@ Todo cambio debe estar atribuido a un parche (`fixes/*.json`) o a un diff revisa
 (`audit_policy.sensitive_nodes`) y cualquier regresión del linter. Credenciales y settings no se
 pueden verificar vía API: el informe lo dice explícitamente.
 
-La publicación **no está automatizada**: la hace el humano desde el historial de versiones de n8n,
-publicando la versión exacta auditada.
+La publicación **no está automatizada, por decisión de diseño**: la hace el humano desde el historial
+de versiones de n8n, publicando la versión exacta auditada. Un gate con publicación automática vía
+API de n8n se descartó: exigiría una API key de administración dentro de n8n y un segundo punto de
+entrada a producción, y el bot no admite un segundo Telegram Trigger (un webhook por token).
 
 ## Estado y Data Tables
 
@@ -91,7 +93,7 @@ Data Tables son una bitácora append-only visible desde n8n:
 | `bug_registry` | `ZnL7Qw6OmW52TmTm` | Bugs nuevos (una fila por primera aparición) |
 | `golden_cases` | `KKbMvV8pFJGgjwF6` | Casos de regresión (se llena en F2) |
 | `qa_runs` | `BTmcS1dpdPlqCQtr` | Una fila por barrido |
-| `qa_approvals` | `KfIvB24Ocj14PeVd` | Reservada para un gate de aprobación (sin usar) |
+| `qa_approvals` | `KfIvB24Ocj14PeVd` | Sin uso: el gate automático se descartó (publicación manual). Puedes borrarla desde n8n |
 
 `state/watermarks.json` guarda la última ejecución revisada por workflow.
 
