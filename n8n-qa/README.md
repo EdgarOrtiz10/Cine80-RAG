@@ -1,7 +1,7 @@
 # n8n-qa — Sistema QA multiagente para workflows n8n
 
 Detecta, registra (y en fases posteriores corrige y audita) bugs en los workflows de la
-instancia n8n `n8n.eortiz-dev.com`. Estado actual: **F0 + F1 (detección) + F2 (corrección en borrador)**.
+instancia n8n `n8n.eortiz-dev.com`. Estado actual: **F0 + F1 (detección) + F2 (corrección en borrador) + F3 (auditoría; la publicación es manual)**.
 
 ## Arquitectura
 
@@ -14,6 +14,7 @@ instancia n8n `n8n.eortiz-dev.com`. Estado actual: **F0 + F1 (detección) + F2 (
 | 1 | Registro | `qa/registry.py` + `state/bug_registry.json` | Deduplicación por fingerprint, detección de regresiones |
 | 2 | A3 Triage | `.claude/agents/n8n-qa-triage.md` | Causa raíz, bugs hermanos, caso golden |
 | 2 | A4 Fixer | `.claude/agents/n8n-qa-fixer.md` + `fixes/*.json` | Parche mínimo en borrador, nunca publica |
+| 3 | A6 Auditor | `.claude/agents/n8n-qa-auditor.md` + `qa/audit.py` + `audits/` | Diff publicado↔borrador, atribución de cada cambio, veredicto |
 | 2 | A5 Tester | `.claude/agents/n8n-qa-tester.md` + `qa/golden.py` + `golden/` | Reproduce antes y verifica después con pin data |
 
 ## Catálogo de reglas
@@ -63,6 +64,21 @@ python3 -m qa.golden check <wf> <caso> <execution.json>
 
 Si añades un nodo con credenciales al workflow, añádelo a `_base.json` o correrá de verdad.
 
+## Auditoría (F3)
+
+```bash
+python3 -m qa.audit <publicado.json> <borrador.json> --policy assertions/<wf>.json --out audits/<fecha>_<wf>
+```
+
+Todo cambio debe estar atribuido a un parche (`fixes/*.json`) o a un diff revisado por un humano
+(`fixes/reviewed/*.json`); si no, **RECHAZADO**. También rechaza nodos de riesgo nuevos
+(HTTP, comandos, API de n8n), código con `fetch`/`require`/`eval`, cambios en nodos de seguridad
+(`audit_policy.sensitive_nodes`) y cualquier regresión del linter. Credenciales y settings no se
+pueden verificar vía API: el informe lo dice explícitamente.
+
+La publicación **no está automatizada**: la hace el humano desde el historial de versiones de n8n,
+publicando la versión exacta auditada.
+
 ## Estado y Data Tables
 
 El MCP de n8n solo puede **insertar** filas en Data Tables (no leerlas ni actualizarlas), así
@@ -75,6 +91,7 @@ Data Tables son una bitácora append-only visible desde n8n:
 | `bug_registry` | `ZnL7Qw6OmW52TmTm` | Bugs nuevos (una fila por primera aparición) |
 | `golden_cases` | `KKbMvV8pFJGgjwF6` | Casos de regresión (se llena en F2) |
 | `qa_runs` | `BTmcS1dpdPlqCQtr` | Una fila por barrido |
+| `qa_approvals` | `KfIvB24Ocj14PeVd` | Reservada para un gate de aprobación (sin usar) |
 
 `state/watermarks.json` guarda la última ejecución revisada por workflow.
 
@@ -109,5 +126,4 @@ para `.claude/settings.json` (debe aplicarla el propietario del repo):
 
 ## Roadmap
 
-- **F3** Auditor independiente + aprobación por Telegram + rollback.
 - **F4** Bibliotecario: cada bug corregido genera regla nueva + golden case.

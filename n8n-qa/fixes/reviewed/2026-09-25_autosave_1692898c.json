@@ -1,0 +1,10 @@
+{
+ "_doc": "Autosave 1692898c (22-09-2026, autor: Edgar Ortiz Escudero) revisado en la sesión QA del 25-09-2026: añade la rama de error de Append Gastos (onError=continueErrorOutput) y notas visuales. Sin cambios de lógica fuera de esa rama. Revisado por Claude; pendiente de confirmación humana. Incluye además retryOnFail=true, maxTries=2, waitBetweenTries=1000 en Append Gastos: riesgo aceptado de fila duplicada si el primer append escribió pero su respuesta falló (timeout).",
+ "reviewed_version": "1692898c-eff2-4f4f-ac13-f6889ca19e1c",
+ "nodes": [
+  "Append Gastos",
+  "Limpiar Pendiente (Error Guardado)",
+  "Notificar Fallo Guardado (Admin)",
+  "Send Error Guardado (Usuario)"
+ ]
+}

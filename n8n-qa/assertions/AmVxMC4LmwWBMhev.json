@@ -5,17 +5,45 @@
     {
       "type": "nonempty_fields",
       "node": "Append Gastos",
-      "fields": ["ID", "Fecha", "Establecimiento", "Monto", "Moneda"]
+      "fields": [
+        "ID",
+        "Fecha",
+        "Establecimiento",
+        "Monto",
+        "Moneda"
+      ]
     },
     {
       "type": "nonempty_fields",
       "node": "Append Items",
-      "fields": ["ID_Gasto", "Nombre_Producto", "Precio_Unitario"]
+      "fields": [
+        "ID_Gasto",
+        "Nombre_Producto",
+        "Precio_Unitario"
+      ]
     },
     {
       "type": "agent_fallback",
       "agent": "Danieled Agent",
-      "tools": ["Consultar Gastos", "Consultar Gastos por Categoría"]
+      "tools": [
+        "Consultar Gastos",
+        "Consultar Gastos por Categoría"
+      ]
     }
-  ]
+  ],
+  "audit_policy": {
+    "sensitive_nodes": [
+      "Telegram Trigger",
+      "Normalizar Update",
+      "Filtro Allowlist",
+      "Rate Limit",
+      "Guardrail de Entrada",
+      "Restaurar Contexto",
+      "¿Guardrail Bloqueado?",
+      "Guardrail de Voz",
+      "Restaurar Contexto (Voz)",
+      "¿Guardrail Voz Bloqueado?"
+    ],
+    "_doc": "Nodos de seguridad: cualquier cambio exige revisión humana explícita aunque esté atribuido."
+  }
 }

@@ -2,6 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
+from qa.audit import audit
 from qa.check_execution import check_execution
 from qa.graph import load_workflow
 from qa.registry import merge
@@ -97,6 +98,29 @@ class Registry(unittest.TestCase):
         self.assertEqual((len(new), len(recurring)), (0, len(findings)))
         self.assertEqual(registry[findings[0]["fingerprint"]]["status"], "regression")
         self.assertEqual(registry[findings[0]["fingerprint"]]["occurrences"], 2)
+
+
+class Auditor(unittest.TestCase):
+    def setUp(self):
+        self.pub = json.loads((FIXTURES / "wf_df01.json").read_text())
+        self.draft = json.loads((FIXTURES / "wf_df01.json").read_text())
+        self.draft["nodes"].append({"name": "Llamar API", "type": "n8n-nodes-base.httpRequest", "parameters": {}})
+
+    def test_unattributed_and_risky_node_rejects(self):
+        r = audit(self.pub, self.draft, {}, {})
+        self.assertEqual(r["verdict"], "RECHAZADO")
+        kinds = {f["kind"] for f in r["findings"]}
+        self.assertEqual(kinds, {"cambio no atribuido", "tipo de nodo de riesgo"})
+
+    def test_attributed_sensitive_node_still_needs_human(self):
+        self.draft["nodes"][0]["parameters"]["jsCode"] += "\n// cambio"
+        r = audit(self.pub, self.draft, {"sensitive_nodes": ["Recuperar"]}, {"Recuperar": ["fix.json"], "Llamar API": ["fix.json"]})
+        self.assertIn("nodo sensible modificado", {f["kind"] for f in r["findings"]})
+
+    def test_lint_regression_rejects(self):
+        clean = json.loads((FIXTURES / "wf_clean.json").read_text())
+        r = audit(clean, self.pub | {"id": clean["id"]}, {}, {n["name"]: ["fix.json"] for n in self.pub["nodes"]})
+        self.assertIn("regresión de linter DF-01", {f["kind"] for f in r["findings"]})
 
 
 if __name__ == "__main__":

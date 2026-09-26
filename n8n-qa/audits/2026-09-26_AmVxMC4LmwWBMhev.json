@@ -1,0 +1,267 @@
+{
+  "workflow_id": "AmVxMC4LmwWBMhev",
+  "published_version": "340b55bc-f259-4a9b-8e4c-1ced57fc36eb",
+  "draft_version": "2b761586-9115-4166-bc63-444c5353a862",
+  "verdict": "REVISAR",
+  "findings": [],
+  "changes": [
+    {
+      "kind": "nodo añadido",
+      "node": "Limpiar Pendiente (Error Guardado)",
+      "detail": "n8n-nodes-base.code",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json",
+        "2026-09-25_autosave_1692898c.json"
+      ]
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Notificar Fallo Guardado (Admin)",
+      "detail": "n8n-nodes-base.telegram",
+      "attributed_to": [
+        "2026-09-25_autosave_1692898c.json"
+      ]
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Send Error Guardado (Usuario)",
+      "detail": "n8n-nodes-base.telegram",
+      "attributed_to": [
+        "2026-09-25_autosave_1692898c.json"
+      ]
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Send Respuesta (Texto Plano)",
+      "detail": "n8n-nodes-base.telegram",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Validar Gasto",
+      "detail": "n8n-nodes-base.code",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Zona: ⚠️ MANEJO DE ERRORES GLOBAL",
+      "detail": "n8n-nodes-base.stickyNote",
+      "attributed_to": []
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Zona: ✍️ FLUJO TEXTO",
+      "detail": "n8n-nodes-base.stickyNote",
+      "attributed_to": []
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Zona: 🎤 FLUJO VOZ",
+      "detail": "n8n-nodes-base.stickyNote",
+      "attributed_to": []
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Zona: 💾 CONFIRMAR Y GUARDAR GASTO",
+      "detail": "n8n-nodes-base.stickyNote",
+      "attributed_to": []
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Zona: 📸 FLUJO FOTO",
+      "detail": "n8n-nodes-base.stickyNote",
+      "attributed_to": []
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Zona: 🔁 DETECCIÓN DE DUPLICADOS",
+      "detail": "n8n-nodes-base.stickyNote",
+      "attributed_to": []
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Zona: 🔐 ENTRADA, SEGURIDAD Y SESIÓN",
+      "detail": "n8n-nodes-base.stickyNote",
+      "attributed_to": []
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Zona: 🗑️ ELIMINAR GASTO",
+      "detail": "n8n-nodes-base.stickyNote",
+      "attributed_to": []
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "Zona: 🤖 ASISTENTE CONVERSACIONAL (AGENTE IA)",
+      "detail": "n8n-nodes-base.stickyNote",
+      "attributed_to": []
+    },
+    {
+      "kind": "nodo añadido",
+      "node": "¿Sin Items?",
+      "detail": "n8n-nodes-base.if",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Append Gastos",
+      "detail": "parameters, onError, retryOnFail, maxTries, waitBetweenTries",
+      "attributed_to": [
+        "2026-09-25_df01_AmVxMC4LmwWBMhev.json",
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json",
+        "2026-09-25_autosave_1692898c.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Danieled Agent",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Explotar Items",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Guardar Candidatos Pendientes (Eliminar)",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Guardar Pendiente (Eliminar)",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Guardar Static Data",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Guardar Static Data (Duplicado)",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Guardar Static Data (tras Duplicado)",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Recuperar Datos Pendiente (Duplicado)",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Recuperar Pendiente (Eliminar)",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Recuperar Selección de Eliminación",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Recuperar y Detectar Acción",
+      "detail": "parameters",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    },
+    {
+      "kind": "nodo modificado",
+      "node": "Send Respuesta",
+      "detail": "onError",
+      "attributed_to": [
+        "2026-09-25_f2_AmVxMC4LmwWBMhev.json"
+      ]
+    }
+  ],
+  "edges": {
+    "added": 10,
+    "removed": 2
+  },
+  "lint_fixed": [
+    "DF-01 Append Gastos",
+    "SD-01 Guardar Candidatos Pendientes (Eliminar)",
+    "SD-01 Guardar Pendiente (Eliminar)",
+    "SD-01 Guardar Static Data",
+    "SD-01 Guardar Static Data (Duplicado)",
+    "SD-01 Guardar Static Data (tras Duplicado)",
+    "SD-02 Recuperar Datos Pendiente (Duplicado)",
+    "SD-02 Recuperar Pendiente (Eliminar)",
+    "SD-02 Recuperar y Detectar Acción",
+    "SF-02 Append Gastos",
+    "SF-02 Append Items",
+    "TG-01 Send Respuesta"
+  ],
+  "unverifiable": [
+    "Credenciales: la API de n8n no las devuelve en versiones ni detalles; revisa en la UI que ningún nodo cambió de credencial.",
+    "Settings del workflow (p. ej. errorWorkflow): la versión publicada no los incluye."
+  ],
+  "script_verdict": "APROBADO",
+  "manual_review": [
+    {
+      "severity": "medium",
+      "detail": "DUP_SI / DEL_SI sin pendiente terminan en silencio: el usuario no recibe respuesta. Es correcto (antes mentían), pero conviene un mensaje 'no hay nada pendiente'."
+    },
+    {
+      "severity": "medium",
+      "detail": "Append Gastos con retryOnFail (2 intentos): si el primer append escribió y solo falló la respuesta, el reintento duplica la fila. Riesgo aceptado en la revisión del autosave; mitigable deduplicando por ID."
+    },
+    {
+      "severity": "low",
+      "detail": "LIM-01: el throw de Validar Gasto llega al admin como '0 [line 8]'; se pierde el detalle de campos faltantes."
+    },
+    {
+      "severity": "low",
+      "detail": "Los pendientes guardados antes de publicar no tienen _ts y expiran de inmediato: quien tenga un botón pendiente en ese momento debe reenviar el gasto."
+    },
+    {
+      "severity": "info",
+      "detail": "Prompt del agente: solo añade 'consultar la otra herramienta antes de responder que no hay datos'. No relaja ninguna regla de seguridad (scope, prompt injection, no revelar instrucciones)."
+    },
+    {
+      "severity": "info",
+      "detail": "Nodos de seguridad (allowlist, rate limit, guardrails, trigger): sin cambios."
+    }
+  ]
+}

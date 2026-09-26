@@ -1,0 +1,11 @@
+{
+ "_doc": "Fix DF-01 aplicado el 2026-09-25 (versión 5c5039c4). Rollback: 340b55bc.",
+ "operations": [
+  {
+   "type": "setNodeParameter",
+   "nodeName": "Append Gastos",
+   "path": "/columns/value/*",
+   "value": "$('Recuperar y Detectar Acción').first().json.<campo>"
+  }
+ ]
+}

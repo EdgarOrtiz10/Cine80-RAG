@@ -1,9 +1,9 @@
 ---
 name: n8n-qa
-description: Orquestador del sistema QA multiagente de n8n (F1 detección + F2 corrección). Úsalo cuando el usuario pida "QA", "barrido QA", "auditar/revisar bugs de n8n", "QA <workflowId>", "corrige los bugs QA" / "QA fix <bug_id>", o cuando lo dispare la Routine diaria.
+description: Orquestador del sistema QA multiagente de n8n (F1 detección + F2 corrección + F3 auditoría). Úsalo cuando el usuario pida "QA", "barrido QA", "auditar/revisar bugs de n8n", "QA <workflowId>", "corrige los bugs QA" / "QA fix <bug_id>", o cuando lo dispare la Routine diaria.
 ---
 
-# Orquestador QA n8n — F1 (detección) + F2 (corrección)
+# Orquestador QA n8n — F1 (detección) + F2 (corrección) + F3 (auditoría)
 
 El barrido (F1) **solo detecta y registra**. La corrección (F2) solo ocurre cuando el usuario la
 pide y **nunca publica**: deja el parche en el borrador para revisión humana (F3).
@@ -52,6 +52,17 @@ Ciclo por bug o grupo de bugs del mismo workflow, en este orden:
    `root_cause`) y las Data Tables `bug_registry` / `golden_cases`; commit y push.
 7. Reporta: qué se corrigió, evidencia (executionIds), lo no verificable con pin data, y que
    **publicar es decisión del usuario**.
+
+## Auditoría (F3) — tras cada F2, antes de pedir la publicación
+1. Lanza `n8n-qa-auditor` SOLO con el `workflowId` (no le pases el razonamiento del Fixer).
+2. RECHAZADO → vuelve a F2 con el bloqueo concreto. REVISAR / APROBADO → informe listo.
+3. Commit y push de `n8n-qa/audits/<fecha>_<wf>.md|.json`.
+4. Entrega al usuario: veredicto, riesgos de la revisión manual, versión a publicar y versión
+   de rollback. **La publicación la hace el humano en la UI de n8n** (historial de versiones →
+   publicar la versión auditada exacta, no "el borrador actual" si cambió después).
+5. Si el usuario confirma que publicó: marca los bugs `fix_pending_publish` de esa versión
+   como `published` en `state/bug_registry.json`. Rollback: publicar desde el historial la
+   versión anotada como rollback en el informe.
 
 Estados del registro: open → fix_pending_publish → published (lo marca el humano al publicar)
 → regression (si reaparece). `wontfix` y `LIM-*` (limitaciones de plataforma) no bloquean.
